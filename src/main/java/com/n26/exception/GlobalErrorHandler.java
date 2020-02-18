@@ -1,6 +1,6 @@
 package com.n26.exception;
 
-import org.springframework.http.ResponseEntity;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,19 +16,24 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @ControllerAdvice
 public class GlobalErrorHandler {
-
-    public static final String DEFAULT_ERROR_VIEW = "error";
-
     /**
      * Exception handler for bad requests
      */
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
-    @ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class})
-    public ResponseEntity methodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    @ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class, InvalidFormatException.class})
+    public Error methodArgumentNotValidException(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         List<org.springframework.validation.FieldError> fieldErrors = result.getFieldErrors();
-        return new ResponseEntity<>(fieldErrors, UNPROCESSABLE_ENTITY);
+        return processFieldErrors(fieldErrors);
+    }
+
+    private Error processFieldErrors(List<org.springframework.validation.FieldError> fieldErrors) {
+        Error error = new Error(UNPROCESSABLE_ENTITY.value(), "validation error");
+        for (org.springframework.validation.FieldError fieldError : fieldErrors) {
+            error.addFieldError(fieldError.getObjectName(), fieldError.getField(), fieldError.getDefaultMessage());
+        }
+        return error;
     }
 
 
