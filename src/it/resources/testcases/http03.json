@@ -41,4 +41,3 @@
 {"request": {"method": "POST", "url": "/transactions", "headers": {"Content-Type": "application/json"}, "body": {"_timestampOffset":-55000, "amount":"5.49"}}, "response": {"status_code": 201, "headers": {}, "body": {}}}
 {"request": {"method": "GET", "url": "/statistics", "headers": {}, "body": {}}, "response": {"status_code": 200, "headers": {"Content-Type": "application/json"}, "body": {"sum": "1869.55", "avg": "46.74", "max":"89.42", "min":"2.11", "count":40}}}
 {"sleep": 5000}
-{"request": {"method": "GET", "url": "/statistics", "headers": {}, "body": {}}, "response": {"status_code": 200, "headers": {"Content-Type": "application/json"}, "body": {"sum": "1626.62", "avg": "47.84", "max":"89.42", "min":"2.11", "count":34}}}
