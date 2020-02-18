@@ -2,7 +2,6 @@ package com.n26.model;
 
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Objects;
@@ -34,23 +33,19 @@ public class Statistics {
     }
 
     public Statistics(List<Transaction> transactions) {
-        final List<BigDecimal> amountsLastMinute = transactions.stream()
-                .map(t -> t.getAmount().setScale(2, RoundingMode.HALF_UP))
+        List<BigDecimal> amountsLastMinute = transactions.stream()
+                .map(t -> new BigDecimal(t.getAmount()).setScale(2, RoundingMode.HALF_UP))
                 .collect(toList());
-        final Long count = amountsLastMinute.stream().count();
+        Long count = amountsLastMinute.stream().count();
         this.setCount(count);
         if (count > 0) {
             BigDecimal sum = amountsLastMinute.stream()
-                    .filter(Objects::nonNull)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-            BigDecimal average = amountsLastMinute.stream()
                     .filter(Objects::nonNull)
                     .map(Objects::requireNonNull)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
             this.setSum(sum.toString());
-            this.setAvg(average.divide(new BigDecimal(amountsLastMinute.size()), RoundingMode.HALF_UP).toString());
+            this.setAvg(sum.divide(new BigDecimal(amountsLastMinute.size()),2,RoundingMode.HALF_UP).toString());
             this.setMax(amountsLastMinute.stream().max(BigDecimal::compareTo).get().toString());
             this.setMin(amountsLastMinute.stream().min(BigDecimal::compareTo).get().toString());
         }

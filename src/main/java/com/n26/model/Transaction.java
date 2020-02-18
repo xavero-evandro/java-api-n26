@@ -11,14 +11,14 @@ import java.math.BigDecimal;
 @Setter
 public class Transaction {
     @NumberFormat
-    private BigDecimal amount;
+    private String amount;
     private String timestamp;
 
     public Transaction() {
 
     }
 
-    public Transaction(BigDecimal amount, String timestamp) {
+    public Transaction(String amount, String timestamp) {
         this.amount = amount;
         this.timestamp = timestamp;
     }

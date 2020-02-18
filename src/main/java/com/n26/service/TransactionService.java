@@ -41,16 +41,16 @@ public class TransactionService {
 
     public List<Transaction> getLast60SecondTransactions() {
         return this.getAllTransactions().stream().filter(transaction -> {
-            long time = ISO8601Converter.convertToMillisecs(transaction.getTimestamp())
-                    - LocalDateTime.now().atZone(ZoneOffset.UTC).toInstant().toEpochMilli();
-            if (time < 60000) {
+            long time = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
+                    - ISO8601Converter.convertToMillisecs(transaction.getTimestamp());
+            if (time < 60000)
                 return true;
-            }
-            return true;
+
+            return false;
         }).collect(Collectors.toList());
     }
 
-    public void deleteTransations(){
+    public void deleteTransations() {
         setTransactionList(new ArrayList());
     }
 

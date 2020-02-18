@@ -23,7 +23,7 @@ public class TransactionValidator {
         try {
             JSONPObject json = new JSONPObject(transaction.toString(), Object.class);
             df.parse(transaction.getTimestamp());
-            BigDecimal bd = new BigDecimal(transaction.getAmount().toString()).round(new MathContext(2));
+            BigDecimal bd = new BigDecimal(transaction.getAmount()).round(new MathContext(2));
             long transactionTime = ISO8601Converter.convertToMillisecs(transaction.getTimestamp());
             long nowTime = LocalDateTime.now().atZone(ZoneOffset.UTC).toInstant().toEpochMilli();
             if ((nowTime - transactionTime) < 0) {

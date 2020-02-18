@@ -2,7 +2,6 @@ package com.n26.utils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
@@ -24,7 +23,7 @@ public class ISO8601Converter {
     }
 
     public static long convertToMillisecs(String date){
-        return fromISO8601UTC(date).toInstant(ZoneOffset.UTC).toEpochMilli();
+        return fromISO8601UTC(date).atZone(ZoneOffset.UTC).toInstant().toEpochMilli();
     }
 
 }
